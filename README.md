@@ -10,7 +10,7 @@ Have you ever been lying in bed or away from home and wished you could control y
 ## 🚀 How It Works
 
 CVDA connects to your computer through a custom Discord bot that listens for specific commands you send. The program automatically compiles itself into an executable and places it in the system startup folder, ensuring it runs every time your PC boots.  
-*(If you prefer to disable this, simply change `STARTUP=True` to `STARTUP=False` in the configuration.)*
+*(If you prefer to disable this, simply change `STARTUP=True` to `STARTUP=False` in the compile.py file.)*
 
 ---
 

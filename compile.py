@@ -7,6 +7,12 @@ package_name = "pyinstaller"
 user_profile_path = os.environ['USERPROFILE']
 username = os.path.basename(user_profile_path)
 
+
+# ------------------ VARIABLES YOU CAN EDIT --------------------
+
+STARTUP = True # Automatically move into startup folder after compiling
+
+
 # ------------- EDIT IF YOU KNOW WHAT YOU ARE DOING ---------------
 
 src = os.path.abspath(".\\dist\\CVDA.exe")
@@ -42,15 +48,17 @@ def compile():
         print(e)
         return False
 
+    if STARTUP == True:
    
-    try:
-        os.system("taskkill /f /im  CVDA.exe")
-        subprocess.run(f'move /Y "{src}" "{dst}"', shell=True)
-        os.startfile(f"C:/Users/{username}/AppData/Roaming/Microsoft/Windows/Start Menu/Programs/Startup/CVDA.exe")
-    except:
-        print("Failed to move program to startup folder, may need to be done manually. Or dst variable may need to be edited.")
-        print("\n \n Move failed, starting application anyway.")
-        os.startfile(f"./dst/CVDA.exe")
+        try:
+            os.system("taskkill /f /im  CVDA.exe")
+            subprocess.run(f'move /Y "{src}" "{dst}"', shell=True)
+            os.startfile(f"C:/Users/{username}/AppData/Roaming/Microsoft/Windows/Start Menu/Programs/Startup/CVDA.exe")
+        except:
+            print("Failed to move program to startup folder, may need to be done manually. Or dst variable may need to be edited.")
+            print("\n \n Move failed, starting application anyway.")
+            os.startfile(f"./dst/CVDA.exe")
+
 
     return True
 
