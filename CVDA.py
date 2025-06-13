@@ -13,7 +13,7 @@ from pynput.keyboard import Key, Controller
 # ------------ VARIABLES YOU CHANGE ---------------
 
 browser_path = 'C:/Program Files/Google/Chrome/Application/chrome.exe %s'  # Change this based on your browser path.
-discord_token = "MTM4MzA0NzYyNDAyNTcwNjUyNw.GVDa8v.ekXXeuD9FgtpxT0YI4IIqIgCTP7LMSc_-Yf7kc" # Add your discord bot token here.
+discord_token = "" # Add your discord bot token here.
 prefix = "PC-" # The prefix in which you type the commands.
 
 # ------------------------------------------------
