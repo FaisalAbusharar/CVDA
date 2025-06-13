@@ -38,18 +38,19 @@ CVDA connects to your computer through a custom Discord bot that listens for spe
 ## 🛠️ Setup & Usage Guide
 
 1. Clone the repository or download the source files.
-2. Open the `CVDA.py` file.
+2. Setup a discord bot, follow the tutorial [here](https://discordpy.readthedocs.io/en/stable/discord.html).
+3. Open the `CVDA.py` file.
     - Insert your Discord bot token.
     - Set the path to your preferred browser.
     - (Optional) Change the command prefix if desired.
-3. Open the `compile.py` file.
+4. Open the `compile.py` file.
     - Set `STARTUP=False` if you do not want the bot to run on startup.
-4. Run the provided `.bat` file to execute the compiler.
-5. Monitor the compiler messages for any errors.
+5. Run the provided `.bat` file to execute the compiler.
+6. Monitor the compiler messages for any errors.
     - Ensure the compiled `.exe` has been moved to the startup folder if requested.
-6. Check if your Discord bot is online.
+7. Check if your Discord bot is online.
     - If not, you can run the `.exe` manually.
-7. Start sending commands to your bot using your prefix.
+8. Start sending commands to your bot using your prefix.
     - Example: `PC-shutdown` or `PC-web youtube.com`
 
 ---
