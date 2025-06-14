@@ -22,12 +22,14 @@ CVDA connects to your computer through a custom Discord bot that listens for spe
 - Control system volume through keystroke commands
 - Auto-compiler that handles setup and startup integration automatically
 - Implemented slash commands
+- Support for multiple keystrokes in a single command
+- Works only on one specific server for privacy controls
+
 
 ---
 
 ## 🔧 Upcoming Features
 
-- Support for multiple keystrokes in a single command
 - Remote image sending to your PC
 - Copy text directly to your PC’s clipboard
 - Retrieve current clipboard contents remotely
@@ -42,6 +44,7 @@ CVDA connects to your computer through a custom Discord bot that listens for spe
 2. Setup a discord bot, follow the tutorial [here](https://discordpy.readthedocs.io/en/stable/discord.html).
 3. Open the `CVDA.py` file.
     - Insert your Discord bot token.
+    - Insert your server ID in the guild_id variable.
     - Set the path to your preferred browser.
 4. Open the `compile.py` file.
     - Set `STARTUP=False` if you do not want the bot to run on startup.
@@ -52,7 +55,7 @@ CVDA connects to your computer through a custom Discord bot that listens for spe
     - If not, you can run the `.exe` manually.
 8. Start sending commands to your bot using the slash commands.
     - Example: `/shutdown` or `/web youtube.com`
-
+9. Note: Slash commands may not appear immediately due to discord's weird thing with slash commands, so wait at least 20 minutes before contacting me about an issue.
 ---
 
 ## 🔐 Privacy & Usage
