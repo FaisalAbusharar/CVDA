@@ -23,7 +23,7 @@ CVDA connects to your computer through a custom Discord bot that listens for spe
 - Auto-compiler that handles setup and startup integration automatically
 - Implemented slash commands
 - Support for multiple keystrokes in a single command
-- Works only on one specific server for privacy controls
+- Works only on one specific server for privacy reasons
 
 
 ---
