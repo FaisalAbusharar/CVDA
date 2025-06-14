@@ -5,3 +5,8 @@ dist
 ./build
 /build
 build
+
+
+CVDA.spec
+./CVDA.spec
+/CVDA.spec

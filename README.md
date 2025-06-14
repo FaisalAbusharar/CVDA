@@ -21,6 +21,7 @@ CVDA connects to your computer through a custom Discord bot that listens for spe
 - Send individual keystrokes to your computer (single key per command)
 - Control system volume through keystroke commands
 - Auto-compiler that handles setup and startup integration automatically
+- Implemented slash commands
 
 ---
 
@@ -42,7 +43,6 @@ CVDA connects to your computer through a custom Discord bot that listens for spe
 3. Open the `CVDA.py` file.
     - Insert your Discord bot token.
     - Set the path to your preferred browser.
-    - (Optional) Change the command prefix if desired.
 4. Open the `compile.py` file.
     - Set `STARTUP=False` if you do not want the bot to run on startup.
 5. Run the provided `.bat` file to execute the compiler.
@@ -50,8 +50,8 @@ CVDA connects to your computer through a custom Discord bot that listens for spe
     - Ensure the compiled `.exe` has been moved to the startup folder if requested.
 7. Check if your Discord bot is online.
     - If not, you can run the `.exe` manually.
-8. Start sending commands to your bot using your prefix.
-    - Example: `PC-shutdown` or `PC-web youtube.com`
+8. Start sending commands to your bot using the slash commands.
+    - Example: `/shutdown` or `/web youtube.com`
 
 ---
 
