@@ -5,6 +5,8 @@
 Have you ever been lying in bed or away from home and wished you could control your PC — like shutting it down — without complicated apps or unreliable tools?  
 **CVDA** makes it simple, using the power of Discord to give you remote access without any unnecessary bloat.
 
+This software currently only works for Windows systems.
+
 ---
 
 ## 🚀 How It Works
@@ -25,6 +27,7 @@ CVDA connects to your computer through a custom Discord bot that listens for spe
 - Support for multiple keystrokes in a single command
 - Works only on one specific server for privacy reasons
 - Copy text directly to your PC's clipboard
+- Retrieve current clipboard contents remotely (Including images)
 
 
 ---
@@ -32,7 +35,6 @@ CVDA connects to your computer through a custom Discord bot that listens for spe
 ## 🔧 Upcoming Features
 
 - Remote image sending to your PC
-- Retrieve current clipboard contents remotely
 - Kill specific running applications by command
 - User-locked protection (commands can only be run by you).
 

@@ -4,18 +4,20 @@ import os
 import webbrowser
 from pynput.keyboard import Key, Controller
 import pyperclip
-
+import win32clipboard
+from PIL import Image
+import io
 
 # DO NOT CHANGE THE FILE NAME.
 
-
+ 
 # ------------ VARIABLES YOU CHANGE ---------------
 
 browser_path = 'C:/Program Files/Google/Chrome/Application/chrome.exe %s'  # Change this based on your browser path.
 discord_token = "" # Add your discord bot token here.
-guild_id = 42217674455124339515 # Add your guild ID here, this allows you to only have the commands work in one server & instant updates.
+guild_id = 4221727342164639211 # Add your guild ID here, this allows you to only have the commands work in one server & instant updates.
 
-Activity = nextcord.Activity(name="CVDA 0.1.3 Beta", type=nextcord.ActivityType.streaming) # You can change this aswell, it's optional. .playing .listening .watching are avaliable.
+Activity = nextcord.Activity(name="CVDA 0.1.4 Beta", type=nextcord.ActivityType.streaming) # You can change this aswell, it's optional. .playing .listening .watching are avaliable.
 
 # ------------------------------------------------
 
@@ -140,6 +142,41 @@ async def clipboard(
         keyboard.type(pyperclip.paste())
 
     await interaction.send(f"Successfully copied to your device's clipboard.")
+
+
+@bot.slash_command(description="Paste your device's clipboard to Discord", guild_ids=[guild_id])
+async def paste(interaction: nextcord.Interaction):
+    await interaction.response.defer()  # in case it takes a bit of time
+
+    text = pyperclip.paste()
+    if text:
+        await interaction.send(f"**Clipboard Text:**\n{text}")
+    else:
+        await interaction.send("No text found in clipboard.")
+
+
+    try:
+        win32clipboard.OpenClipboard()
+        if win32clipboard.IsClipboardFormatAvailable(win32clipboard.CF_DIB):
+            data = win32clipboard.GetClipboardData(win32clipboard.CF_DIB)
+            win32clipboard.CloseClipboard()
+
+      
+            image = Image.open(io.BytesIO(data))
+
+
+            image_bytes = io.BytesIO()
+            image.save(image_bytes, format='PNG')
+            image_bytes.seek(0)
+
+            file = nextcord.File(image_bytes, filename="clipboard.png")
+            await interaction.send("**Clipboard Image:**", file=file)
+        else:
+            win32clipboard.CloseClipboard()
+    except Exception as e:
+        await interaction.send(f"Error while reading image: {e}")
+
+
 
 
 bot.run(discord_token) 

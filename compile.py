@@ -73,7 +73,7 @@ def compile():
 
 
 def findPackagesInstalled():
-    packages_to_install = ["pyinstaller", "nextcord", "pyperclip", "pynput"]
+    packages_to_install = ["pyinstaller", "nextcord", "pyperclip", "pynput", "pillow", "pywin32"]
     try:
         import PyInstaller
         packages_to_install.remove("pyinstaller")
@@ -97,6 +97,18 @@ def findPackagesInstalled():
         packages_to_install.remove("pynput")
     except:
         print('Pynput not installed, requesting install.')
+
+    try:
+        import PIL
+        packages_to_install.remove("pillow")
+    except:
+        print('Pillow not installed, requesting install.')
+
+    try:
+        import win32clipboard
+        packages_to_install.remove("pywin32")
+    except:
+        print('Pywin32 not installed, requesting install.')
 
     if not packages_to_install:
         print("All packages installed, proceeding with download")
