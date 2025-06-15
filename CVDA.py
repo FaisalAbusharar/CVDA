@@ -9,6 +9,8 @@ from PIL import Image, ImageGrab
 import io
 import ctypes
 from pathlib import Path
+import win32clipboard
+import win32con
 from uuid import UUID
 
 # DO NOT CHANGE THE FILE NAME.
@@ -18,9 +20,9 @@ from uuid import UUID
 
 browser_path = 'C:/Program Files/Google/Chrome/Application/chrome.exe %s'  # Change this based on your browser path.
 discord_token = "" # Add your discord bot token here.
-guild_id = 12343423421142145 # Add your guild ID here, this allows you to only have the commands work in one server & instant updates.
+guild_id = 12232412234329515 # Add your guild ID here, this allows you to only have the commands work in one server & instant updates.
 
-Activity = nextcord.Activity(name="CVDA 0.2.4 Beta", type=nextcord.ActivityType.streaming) # You can change this aswell, it's optional. .playing .listening .watching are avaliable.
+Activity = nextcord.Activity(name="CVDA 0.2.5 Beta", type=nextcord.ActivityType.streaming) # You can change this aswell, it's optional. .playing .listening .watching are avaliable.
 
 # ------------------------------------------------
 
@@ -147,9 +149,10 @@ async def type(
     await interaction.send(f"Typed {text} on your device.")
 
 
-@bot.slash_command(description="Copy to your device's clipboard", guild_ids=[guild_id])
+@bot.slash_command(description="Copy to your device's clipboard, Note: Image will always be copied last.", guild_ids=[guild_id])
 async def clipboard(
-    interaction: nextcord.Interaction, text: str = nextcord.SlashOption(description="Text to copy to the clipboard"),
+    interaction: nextcord.Interaction, text: str = nextcord.SlashOption(description="Text to copy to the clipboard", required=False, default=None),
+    image: nextcord.Attachment = nextcord.SlashOption(description="Copy an image to the clipboard", required=False, default=None),
     pasteAfter: str = nextcord.SlashOption(
         choices={"Yes": "yes", "No": "no"},
         required=False,
@@ -159,26 +162,59 @@ async def clipboard(
     ),
 ):
     
-    pyperclip.copy(text)
 
-    if pasteAfter == "yes":
-        keyboard.type(pyperclip.paste())
+ 
 
+
+    if image == None and text == None:
+        await interaction.send("You have not inputted text or an image.")
+        return
+    
+    if text != None:
+        pyperclip.copy(text)
+        if pasteAfter == "yes":
+            keyboard.type(pyperclip.paste())
+
+
+    if image != None:    
+        data = await image.read()
+
+      
+        with open("temp_file", "wb") as f:
+            f.write(data)
+
+  
+        image = Image.open("temp_file")
+
+        output = io.BytesIO()
+        image.convert("RGB").save(output, "BMP")  # BMP needed for CF_DIB
+        data = output.getvalue()[14:]  # Skip BMP header for CF_DIB format
+        output.close()
+
+        win32clipboard.OpenClipboard()
+        win32clipboard.EmptyClipboard()
+        win32clipboard.SetClipboardData(win32con.CF_DIB, data)
+        win32clipboard.CloseClipboard()
+
+
+        if pasteAfter == "yes":
+            keyboard.press(Key.ctrl)
+            keyboard.press('v')
+            keyboard.release('v')
+            keyboard.release(Key.ctrl)
+
+
+
+    os.remove("./temp_file")
     await interaction.send(f"Successfully copied to your device's clipboard.")
 
 
-import pyperclip
-import io
-import time
-import os
-from PIL import ImageGrab, Image
-import nextcord
 
 @bot.slash_command(description="Paste your device's clipboard to Discord", guild_ids=[guild_id])
 async def paste(interaction: nextcord.Interaction):
     await interaction.response.defer()
 
-    # Handle text clipboard
+
     text = pyperclip.paste()
     if text:
         await interaction.send(f"**Clipboard Text:**\n{text}")
@@ -193,7 +229,7 @@ async def paste(interaction: nextcord.Interaction):
             return
 
         if isinstance(clipboard_content, list):
-            # File(s) copied
+
             for file_path in clipboard_content:
                 ext = os.path.splitext(file_path)[1].lower()
                 if ext in ['.png', '.jpg', '.jpeg', '.bmp', '.gif', '.webp']:
@@ -210,7 +246,7 @@ async def paste(interaction: nextcord.Interaction):
             await interaction.send("No valid image file found in copied files.")
             return
 
-        # Regular image copied (not file)
+
         image_bytes = io.BytesIO()
         clipboard_content.save(image_bytes, format='PNG')
         image_bytes.seek(0)
