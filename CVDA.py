@@ -3,7 +3,6 @@ import nextcord
 import os
 import webbrowser
 from pynput.keyboard import Key, Controller
-import subprocess
 import pyperclip
 
 
@@ -14,9 +13,9 @@ import pyperclip
 
 browser_path = 'C:/Program Files/Google/Chrome/Application/chrome.exe %s'  # Change this based on your browser path.
 discord_token = "" # Add your discord bot token here.
-guild_id = 3122727142554239311 # Add your guild ID here, this allows you to only have the commands work in one server & instant updates.
+guild_id = 42217674455124339515 # Add your guild ID here, this allows you to only have the commands work in one server & instant updates.
 
-Activity = nextcord.Activity(name="CVDA 0.1.2 Beta", type=nextcord.ActivityType.streaming) # You can change this aswell, it's optional. .playing .listening .watching are avaliable.
+Activity = nextcord.Activity(name="CVDA 0.1.3 Beta", type=nextcord.ActivityType.streaming) # You can change this aswell, it's optional. .playing .listening .watching are avaliable.
 
 # ------------------------------------------------
 

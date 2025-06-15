@@ -40,23 +40,22 @@ CVDA connects to your computer through a custom Discord bot that listens for spe
 
 ## 🛠️ Setup & Usage Guide
 
-1. Clone the repository or download the source files.
-2. Setup a discord bot, follow the tutorial [here](https://discordpy.readthedocs.io/en/stable/discord.html).
-3. Open the `CVDA.py` file.
-    - Insert your Discord bot token.
-    - Insert your server ID in the guild_id variable.
-    - Set the path to your preferred browser.
-4. Open the `compile.py` file.
-    - Set `STARTUP=False` if you do not want the bot to run on startup.
-5. Run the provided `.bat` file to execute the compiler.
-6. Monitor the compiler messages for any errors.
-    - Ensure the compiled `.exe` has been moved to the startup folder if requested.
-7. Check if your Discord bot is online.
-    - If not, you can run the `.exe` manually.
-8. Start sending commands to your bot using the slash commands.
-    - Example: `/shutdown` or `/web youtube.com`
-9. Note: Slash commands may not appear immediately due to discord's weird thing with slash commands, so wait at least 20 minutes before contacting me about an issue.
----
+1. Download and install Python 3.10.0 from [https://www.python.org/downloads/release/python-3100/](https://www.python.org/downloads/release/python-3100/).  
+2. Clone the repository or download the source files.  
+3. Setup a Discord bot by following the tutorial [here](https://discordpy.readthedocs.io/en/stable/discord.html).  
+4. Open the `CVDA.py` file.  
+    - Insert your Discord bot token.  
+    - Insert your server ID in the `guild_id` variable.  
+    - Set the path to your preferred browser.  
+5. Open the `compile.py` file.  
+    - Set `STARTUP=False` if you do not want the bot to run on startup.  
+6. Run the provided `.bat` file to execute the compiler.  
+7. Monitor the compiler messages for any errors.  
+    - Ensure the compiled `.exe` has been moved to the startup folder if requested.  
+8. Check if your Discord bot is online.  
+    - If not, you can run the `.exe` manually.  
+9. Slash commands may take up to 20 minutes to appear—please wait before reporting issues.  
+
 
 ## 🔐 Privacy & Usage
 

