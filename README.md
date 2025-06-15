@@ -24,6 +24,7 @@ CVDA connects to your computer through a custom Discord bot that listens for spe
 - Implemented slash commands
 - Support for multiple keystrokes in a single command
 - Works only on one specific server for privacy reasons
+- Copy text directly to your PC's clipboard
 
 
 ---
@@ -31,7 +32,6 @@ CVDA connects to your computer through a custom Discord bot that listens for spe
 ## 🔧 Upcoming Features
 
 - Remote image sending to your PC
-- Copy text directly to your PC’s clipboard
 - Retrieve current clipboard contents remotely
 - Kill specific running applications by command
 - User-locked protection (commands can only be run by you).

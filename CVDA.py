@@ -3,7 +3,8 @@ import nextcord
 import os
 import webbrowser
 from pynput.keyboard import Key, Controller
-
+import subprocess
+import pyperclip
 
 
 # DO NOT CHANGE THE FILE NAME.
@@ -13,9 +14,9 @@ from pynput.keyboard import Key, Controller
 
 browser_path = 'C:/Program Files/Google/Chrome/Application/chrome.exe %s'  # Change this based on your browser path.
 discord_token = "" # Add your discord bot token here.
-guild_id = 1121367322514849521 # Add your guild ID here, this allows you to only have the commands work in one server & instant updates.
+guild_id = 3122727142554239311 # Add your guild ID here, this allows you to only have the commands work in one server & instant updates.
 
-Activity = nextcord.Activity(name="CVDA 0.1.1 Beta", type=nextcord.ActivityType.streaming) # You can change this aswell, it's optional. .playing .listening .watching are avaliable.
+Activity = nextcord.Activity(name="CVDA 0.1.2 Beta", type=nextcord.ActivityType.streaming) # You can change this aswell, it's optional. .playing .listening .watching are avaliable.
 
 # ------------------------------------------------
 
@@ -47,12 +48,12 @@ async def restart(interaction:  nextcord.Interaction):
 # --------------- COMPUTER SOFTWARE CONTROL ------------------
 
 @bot.slash_command(description="Input a URL that will be opened on the host device.", guild_ids=[guild_id])
-async def web(interaction: nextcord.Interaction, arg: str = nextcord.SlashOption(description="The URL to open on the host device.")):
+async def web(interaction: nextcord.Interaction, text: str = nextcord.SlashOption(description="The URL to open on the host device.")):
     try:
-        webbrowser.get(browser_path).open(arg)
-        await interaction.send(f"Opened {arg} in your default browser.")
+        webbrowser.get(browser_path).open(text)
+        await interaction.send(f"Opened {text} in your default browser.")
     except Exception as e:
-        await interaction.send(f"Failed to open {arg}: {e}")
+        await interaction.send(f"Failed to open {text}: {e}")
 
 
 
@@ -61,9 +62,9 @@ async def web(interaction: nextcord.Interaction, arg: str = nextcord.SlashOption
 
 
 @bot.slash_command(description="Send a keystroke to the device that will be inputted.", guild_ids=[guild_id])
-async def keystroke(interaction: nextcord.Interaction, arg: str = nextcord.SlashOption(description="The key to press (e.g. 'enter', 'space', 'a').") ):
+async def keystroke(interaction: nextcord.Interaction, text: str = nextcord.SlashOption(description="The key to press (e.g. 'enter', 'space', 'a').") ):
 
-    arg = arg.lower()
+    text = text.lower()
 
     special_keys = {
     "space": Key.space,
@@ -81,20 +82,20 @@ async def keystroke(interaction: nextcord.Interaction, arg: str = nextcord.Slash
     
     }
 
-    key = special_keys.get(arg.lower(), arg)
+    key = special_keys.get(text.lower(), text)
 
     try:
         keyboard.press(key)
         keyboard.release(key)
-        await interaction.send(f"Pressed key: {arg}")
+        await interaction.send(f"Pressed key: {text}")
     except ValueError as e:
-        await interaction.send(f"Invalid key: {arg}")
+        await interaction.send(f"Invalid key: {text}")
 
 
 
 @bot.slash_command(description="Simillar to the keystroke command, but types out full sentences.", guild_ids=[guild_id])
 async def type(
-    interaction: nextcord.Interaction,arg: str = nextcord.SlashOption(description="The full sentence to type on the host device."), 
+    interaction: nextcord.Interaction,text: str = nextcord.SlashOption(description="The full sentence to type on the host device."), 
                sendEnter: str = nextcord.SlashOption(
     name="send_enter",
     choices={"Yes": "yes", "No": "no"},
@@ -103,9 +104,8 @@ async def type(
     description="Press enter after typing the message."
     ),):
 
-
-    # This is a really specific edge case, but who knows, might be helpful.
-    for char in arg:
+      # This is a really specific edge case, but who knows, might be helpful.
+    for char in text:
         if char == '\n':
             keyboard.press(Key.enter)
             keyboard.release(Key.enter)
@@ -120,8 +120,27 @@ async def type(
         keyboard.press(Key.enter)
         keyboard.release(Key.enter)
     
-    await interaction.send(f"Typed {arg} on your device.")
+    await interaction.send(f"Typed {text} on your device.")
 
+
+@bot.slash_command(description="Copy to your device's clipboard", guild_ids=[guild_id])
+async def clipboard(
+    interaction: nextcord.Interaction, text: str = nextcord.SlashOption(description="Text to copy to the clipboard"),
+    pasteAfter: str = nextcord.SlashOption(
+        choices={"Yes": "yes", "No": "no"},
+        required=False,
+        default="no",
+        description="Paste the clipboard after copying it",
+        name="paste_clipboard",
+    ),
+):
+    
+    pyperclip.copy(text)
+
+    if pasteAfter == "yes":
+        keyboard.type(pyperclip.paste())
+
+    await interaction.send(f"Successfully copied to your device's clipboard.")
 
 
 bot.run(discord_token) 
