@@ -10,3 +10,8 @@ build
 CVDA.spec
 ./CVDA.spec
 /CVDA.spec
+
+
+./test.py
+/test.py
+test.py

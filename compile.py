@@ -1,6 +1,10 @@
 import os
 import subprocess
 import sys
+import ctypes
+from pathlib import Path
+from uuid import UUID
+
 
 package_name = "pyinstaller"
 
@@ -16,7 +20,30 @@ STARTUP = True # Automatically move into startup folder after compiling
 # ------------- EDIT IF YOU KNOW WHAT YOU ARE DOING ---------------
 
 src = os.path.abspath(".\\dist\\CVDA.exe")
-dst = f"C:\\Users\\{username}\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\Startup\\"
+
+def get_user_startup_folder():
+    FOLDERID_Startup = UUID('{B97D20BB-F46A-4C97-BA10-5E3608430854}')
+    guid_bytes = (ctypes.c_byte * 16).from_buffer_copy(FOLDERID_Startup.bytes_le)
+
+    SHGetKnownFolderPath = ctypes.windll.shell32.SHGetKnownFolderPath
+    SHGetKnownFolderPath.argtypes = [
+        ctypes.POINTER(ctypes.c_byte * 16),
+        ctypes.c_uint32,
+        ctypes.c_void_p,
+        ctypes.POINTER(ctypes.c_wchar_p)
+    ]
+
+    path_ptr = ctypes.c_wchar_p()
+    result = SHGetKnownFolderPath(ctypes.byref(guid_bytes), 0, None, ctypes.byref(path_ptr))
+    if result != 0:
+        raise ctypes.WinError(result)
+
+
+    path = Path(path_ptr.value)
+
+    final = str(path.as_posix())
+
+    return final
 
 
 
@@ -57,9 +84,10 @@ def compile():
     if STARTUP == True:
    
         try:
+            print(get_user_startup_folder())
             os.system("taskkill /f /im  CVDA.exe")
-            subprocess.run(f'move /Y "{src}" "{dst}"', shell=True)
-            os.startfile(f"C:/Users/{username}/AppData/Roaming/Microsoft/Windows/Start Menu/Programs/Startup/CVDA.exe")
+            subprocess.run(f'move /Y "{src}" "{get_user_startup_folder()}"', shell=True)
+            os.startfile(f"{get_user_startup_folder()}/CVDA.exe")
         except:
             print("Failed to move program to startup folder, may need to be done manually. Or dst variable may need to be edited.")
             print("\n \n Move failed, starting application anyway.")
@@ -73,7 +101,7 @@ def compile():
 
 
 def findPackagesInstalled():
-    packages_to_install = ["pyinstaller", "nextcord", "pyperclip", "pynput", "pillow", "pywin32"]
+    packages_to_install = ["pyinstaller", "nextcord", "pyperclip", "pynput", "pillow"]
     try:
         import PyInstaller
         packages_to_install.remove("pyinstaller")
@@ -104,11 +132,9 @@ def findPackagesInstalled():
     except:
         print('Pillow not installed, requesting install.')
 
-    try:
-        import win32clipboard
-        packages_to_install.remove("pywin32")
-    except:
-        print('Pywin32 not installed, requesting install.')
+  
+
+ 
 
     if not packages_to_install:
         print("All packages installed, proceeding with download")
