@@ -4,7 +4,6 @@ import sys
 import ctypes
 from pathlib import Path
 import asyncio
-from CVDA import discord_token
 from uuid import UUID
 
 
@@ -78,6 +77,7 @@ def tryInstallPackages(packages):
 def compile():
 
     import requests
+    from CVDA import discord_token
 
     
     headers = {
