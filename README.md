@@ -6,6 +6,8 @@ Have you ever been lying in bed or away from home and wished you could control y
 **CVDA** makes it simple, using the power of Discord to give you remote access without any unnecessary bloat.
 
 This software currently only works for Windows systems.
+Application itself is 19MB, Dependencies are roughly ~35MB in size. All folders can be removed after executable has been installed & run.
+Python 3.10 is around 120 MB. Total application size is: 174MB. 
 
 ---
 

