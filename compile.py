@@ -118,10 +118,10 @@ def compile():
         except:
             print("Failed to move program to startup folder, may need to be done manually. Or dst variable may need to be edited.")
             print("\n \n Move failed, starting application anyway.")
-            os.startfile(f"./dst/CVDA.exe")
+            os.startfile(f"./dist/CVDA.exe")
     
     else:
-        os.startfile(f"./dst/CVDA.exe")
+        os.startfile(f"./dist/CVDA.exe")
 
 
     return True
@@ -166,14 +166,14 @@ def findPackagesInstalled():
         print('Pywin32 not installed, requesting install.')
 
     try:
-        import win32clipboard
+        import requests
         packages_to_install.remove("requests")
     except:
         print('Requests not installed, requesting install.')
 
 
  
-
+ 
     if not packages_to_install:
         print("All packages installed, proceeding with download")
         return True
@@ -181,7 +181,9 @@ def findPackagesInstalled():
         print(f"Dependencies missing, installing {packages_to_install}")
         result = tryInstallPackages(packages=packages_to_install)
         if result == True:
-            return True
+             print("restarting installation process.")
+             os.startfile(f"run.bat")
+             quit()
         else:
             return False
 
@@ -196,5 +198,8 @@ if packageReuslt == False:
 compileResult = compile()
 if compileResult == True:
     print(" \n \n \n Completed Compiler... Application has started, check to see if your discord bot is currently online.")
+    input("Press Enter to Close.")
+
 else:
     print("\n \n \n An error has occurred in the compiler.")
+    input("Press Enter to Close.")
