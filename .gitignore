@@ -15,3 +15,7 @@ CVDA.spec
 ./test.py
 /test.py
 test.py
+
+__pycache__
+/__pycache__
+./__pycache__

@@ -12,20 +12,30 @@ from pathlib import Path
 import win32clipboard
 import win32con
 from uuid import UUID
+import json
+
 
 # DO NOT CHANGE THE FILE NAME.
 
  
 # ------------ VARIABLES YOU CHANGE ---------------
 
-browser_path = 'C:/Program Files/Google/Chrome/Application/chrome.exe %s'  # Change this based on your browser path.
-discord_token = "" # Add your discord bot token here.
-guild_id = 122176734267676 # Add your guild ID here, this allows you to only have the commands work in one server & instant updates.
-allowed_users = [730505256153456423, 7120523256153456343] # Add your user ID here, this allows you to choose who is allowed to use the commands. You are allowed multiple people.
 
-Activity = nextcord.Activity(name="CVDA 0.2.8 Beta", type=nextcord.ActivityType.listening) # You can change this aswell, it's optional. .playing .listening .watching are avaliable.
+Activity = nextcord.Activity(name="CVDA 0.3.8 Beta", type=nextcord.ActivityType.listening) # You can change this aswell, it's optional. .playing .listening .watching are avaliable.
 
 # ------------------------------------------------
+
+
+
+# Load config.json
+with open("config.json", "r") as f:
+    config = json.load(f)
+
+# Extract variables
+browser_path = config["browser_path"]
+discord_token = config["discord_token"]
+guild_id = config["guild_id"]
+allowed_users = config["allowed_users"]
 
 keyboard = Controller()
 

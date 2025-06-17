@@ -3,10 +3,10 @@ import subprocess
 import sys
 import ctypes
 from pathlib import Path
-import asyncio
+import json
 from uuid import UUID
 import sys
-
+import time
 
 package_name = "pyinstaller"
 
@@ -78,7 +78,13 @@ def tryInstallPackages(packages):
 def compile():
 
     import requests
-    from CVDA import discord_token
+
+  
+    with open("config.json", "r") as f:
+        config = json.load(f)
+
+
+    discord_token = config["discord_token"]
 
     
     headers = {
@@ -94,12 +100,6 @@ def compile():
         print("Invalid token:", response.status_code, response.text)
         quit()
 
-    try:
-        os.system("pyinstaller --onefile --noconsole CVDA.py")
-    except Exception as e:
-        print("PyInstaller failed.")
-        print(e)
-        return False
 
 
     try: 
@@ -114,15 +114,25 @@ def compile():
         try:
             print(get_user_startup_folder())
             os.system("taskkill /f /im  CVDA.exe")
-            subprocess.run(f'move /Y "{src}" "{get_user_startup_folder()}"', shell=True)
-            os.startfile(f"{get_user_startup_folder()}/CVDA.exe")
+            try:
+                os.mkdir(f"{get_user_startup_folder()}/CVDA")
+            except FileExistsError:
+                print("Folder already exists, ignoring.")
+            except Exception as e:
+                print(f"An error has occurred during the folder creation, {e}")
+                quit()
+            subprocess.run(f'move /Y "{src}" "{get_user_startup_folder()}/CVDA"', shell=True)
+            subprocess.run(f'move /Y "config.json" "{get_user_startup_folder()}/CVDA"', shell=True)
+            os.startfile(f"{get_user_startup_folder()}/CVDA")
         except:
             print("Failed to move program to startup folder, may need to be done manually. Or dst variable may need to be edited.")
-            print("\n \n Move failed, starting application anyway.")
-            os.startfile(f"dist/CVDA.exe")
+            print("\n \n Move failed..")
+            os.startfile(f"/dist/")
+
+            
     
     else:
-        os.startfile(f"dist/CVDA.exe")
+        os.startfile(f"/dist/")
 
 
     return True
@@ -186,9 +196,7 @@ def findPackagesInstalled():
         print(f"Dependencies missing, installing {packages_to_install}")
         result = tryInstallPackages(packages=packages_to_install)
         if result == True:
-             print("restarting installation process.")
-             os.startfile(f"run.bat")
-             quit()
+            return True
         else:
             return False
 
@@ -202,7 +210,7 @@ if packageReuslt == False:
 
 compileResult = compile()
 if compileResult == True:
-    print(" \n \n \n Completed Compiler... Application has started, check to see if your discord bot is currently online.")
+    print(" \n \n \n Completed Compiler... Run the .exe and check if the bot is enabled.")
     input("Press Enter to Close.")
 
 else:
