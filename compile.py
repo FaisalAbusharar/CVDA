@@ -5,6 +5,7 @@ import ctypes
 from pathlib import Path
 import asyncio
 from uuid import UUID
+import sys
 
 
 package_name = "pyinstaller"
@@ -102,7 +103,7 @@ def compile():
 
 
     try: 
-        os.system("pyinstaller --onefile --noconsole CVDA.py")
+        os.system("pyinstaller --clean --onefile --noconsole CVDA.py")
     except Exception as e:
         print("Pyinstaller failed to compile, check if the script is avaliable in the same directory.")
         print(e)
@@ -171,7 +172,11 @@ def findPackagesInstalled():
     except:
         print('Requests not installed, requesting install.')
 
-
+    if sys.version_info < (3,10):
+        print("Python version below 3.10, installing aiohttp==3.9.5")
+        os.system("pip install aiohttp==3.9.5")
+    else:
+        pass
  
  
     if not packages_to_install:
