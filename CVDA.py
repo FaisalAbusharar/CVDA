@@ -20,7 +20,7 @@ from uuid import UUID
 
 browser_path = 'C:/Program Files/Google/Chrome/Application/chrome.exe %s'  # Change this based on your browser path.
 discord_token = "" # Add your discord bot token here.
-guild_id = 12256565656435535 # Add your guild ID here, this allows you to only have the commands work in one server & instant updates.
+guild_id = 122176734267676 # Add your guild ID here, this allows you to only have the commands work in one server & instant updates.
 allowed_users = [730505256153456423, 7120523256153456343] # Add your user ID here, this allows you to choose who is allowed to use the commands. You are allowed multiple people.
 
 Activity = nextcord.Activity(name="CVDA 0.2.8 Beta", type=nextcord.ActivityType.listening) # You can change this aswell, it's optional. .playing .listening .watching are avaliable.

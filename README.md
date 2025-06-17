@@ -39,28 +39,35 @@ CVDA connects to your computer through a custom Discord bot that listens for spe
 
 
 - Kill specific running applications by command
+- Take a screenshot of your desktop
+- Add support for function keys in keystroke commands
+- Switch tabs command 
+- Advanced features, including being able to open apps from the bot by storing the file paths
+- Help command for explaination
+- Compiler bug fixes.
 
 ---
 
 ## 🛠️ Setup & Usage Guide
 
 1. Download and install Python 3.10.0 from [https://www.python.org/downloads/release/python-3100/](https://www.python.org/downloads/release/python-3100/).  
-2. Clone the repository or download the source files.  
-3. Setup a Discord bot by following the tutorial [here](https://discordpy.readthedocs.io/en/stable/discord.html).  
-4. Open the `CVDA.py` file.  
+2. During the python installation, select add PYTHON to Path once you open the executable.
+3. Clone the repository or download the source files.  
+4. Setup a Discord bot by following the tutorial [here](https://discordpy.readthedocs.io/en/stable/discord.html).  
+5. Open the `CVDA.py` file.  
     - Insert your Discord bot token.  
     - Insert your server ID in the `guild_id` variable.  
     - Insert your user ID or authorized users ID in the `allowed_users` variable
     - Set the path to your preferred browser.  
-5. Open the `compile.py` file.  
+6. Open the `compile.py` file.  
     - Set `STARTUP=False` if you do not want the bot to run on startup.  
-6. Run the provided `.bat` file to execute the compiler.  
-7. Monitor the compiler messages for any errors.  
+7. Run the provided `.bat` file to execute the compiler.  
+8. Monitor the compiler messages for any errors.  
     - Ensure the compiled `.exe` has been moved to the startup folder if requested.  
-8. Check if your Discord bot is online.  
+9. Check if your Discord bot is online.  
     - If not, you can run the `.exe` manually.  
-9. Slash commands may take up to 20 minutes to appear—please wait before reporting issues. 
-10. Python 3.10.0 might not work with pyinstaller on some systems, [use python 3.9](https://www.python.org/downloads/release/python-390/) instead. 
+10. Slash commands may take up to 20 minutes to appear—please wait before reporting issues. 
+11. Python 3.10.0 might not work with pyinstaller on some systems, [use python 3.9](https://www.python.org/downloads/release/python-390/) instead. 
 
 
 ## 🔐 Privacy & Usage

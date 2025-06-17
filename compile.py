@@ -119,10 +119,10 @@ def compile():
         except:
             print("Failed to move program to startup folder, may need to be done manually. Or dst variable may need to be edited.")
             print("\n \n Move failed, starting application anyway.")
-            os.startfile(f"./dist/CVDA.exe")
+            os.startfile(f"dist/CVDA.exe")
     
     else:
-        os.startfile(f"./dist/CVDA.exe")
+        os.startfile(f"dist/CVDA.exe")
 
 
     return True
