@@ -20,9 +20,10 @@ from uuid import UUID
 
 browser_path = 'C:/Program Files/Google/Chrome/Application/chrome.exe %s'  # Change this based on your browser path.
 discord_token = "" # Add your discord bot token here.
-guild_id = 122175675634839515 # Add your guild ID here, this allows you to only have the commands work in one server & instant updates.
+guild_id = 12256565656435535 # Add your guild ID here, this allows you to only have the commands work in one server & instant updates.
+allowed_users = [730505256153456423, 7120523256153456343] # Add your user ID here, this allows you to choose who is allowed to use the commands. You are allowed multiple people.
 
-Activity = nextcord.Activity(name="CVDA 0.2.7 Beta", type=nextcord.ActivityType.streaming) # You can change this aswell, it's optional. .playing .listening .watching are avaliable.
+Activity = nextcord.Activity(name="CVDA 0.2.8 Beta", type=nextcord.ActivityType.listening) # You can change this aswell, it's optional. .playing .listening .watching are avaliable.
 
 # ------------------------------------------------
 
@@ -56,10 +57,22 @@ def get_downloads_folder():
     return Path(path_ptr.value)
 
 
+
+def isUserAllowed(userid):
+    if userid in allowed_users:
+        return True
+    else: 
+        return False
+
+
 # --------------- COMPUTER HARDWARE CONTROL ------------------
 
 @bot.slash_command(description="Shutdown the device.", guild_ids=[guild_id])
 async def shutdown(interaction: nextcord.Interaction):
+
+    if not isUserAllowed(interaction.user.id): 
+        await interaction.send("You are not authorized to use this bot.")
+        return
     os.system("shutdown /s /t 0")
     await interaction.send("Shutting down..")
 
@@ -67,6 +80,9 @@ async def shutdown(interaction: nextcord.Interaction):
 
 @bot.slash_command(description="Restart the device.", guild_ids=[guild_id])
 async def restart(interaction:  nextcord.Interaction):
+    if not isUserAllowed(interaction.user.id): 
+        await interaction.send("You are not authorized to use this bot.")
+        return
     os.system("shutdown /r /t 1")
     await interaction.send("Restarting..")
 
@@ -75,6 +91,9 @@ async def restart(interaction:  nextcord.Interaction):
 
 @bot.slash_command(description="Input a URL that will be opened on the host device.", guild_ids=[guild_id])
 async def web(interaction: nextcord.Interaction, text: str = nextcord.SlashOption(description="The URL to open on the host device.")):
+    if not isUserAllowed(interaction.user.id): 
+        await interaction.send("You are not authorized to use this bot.")
+        return
     try:
         webbrowser.get(browser_path).open(text)
         await interaction.send(f"Opened {text} in your default browser.")
@@ -89,6 +108,9 @@ async def web(interaction: nextcord.Interaction, text: str = nextcord.SlashOptio
 
 @bot.slash_command(description="Send a keystroke to the device that will be inputted.", guild_ids=[guild_id])
 async def keystroke(interaction: nextcord.Interaction, text: str = nextcord.SlashOption(description="The key to press (e.g. 'enter', 'space', 'a').") ):
+    if not isUserAllowed(interaction.user.id): 
+        await interaction.send("You are not authorized to use this bot.")
+        return
 
     text = text.lower()
 
@@ -130,6 +152,11 @@ async def type(
     description="Press enter after typing the message."
     ),):
 
+    if not isUserAllowed(interaction.user.id): 
+        await interaction.send("You are not authorized to use this bot.")
+        return
+
+
       # This is a really specific edge case, but who knows, might be helpful.
     for char in text:
         if char == '\n':
@@ -163,7 +190,10 @@ async def clipboard(
 ):
     
 
- 
+    if not isUserAllowed(interaction.user.id): 
+        await interaction.send("You are not authorized to use this bot.")
+        return
+    
 
 
     if image == None and text == None:
@@ -212,6 +242,10 @@ async def clipboard(
 
 @bot.slash_command(description="Paste your device's clipboard to Discord", guild_ids=[guild_id])
 async def paste(interaction: nextcord.Interaction):
+    if not isUserAllowed(interaction.user.id): 
+        await interaction.send("You are not authorized to use this bot.")
+        return
+
     await interaction.response.defer()
 
 
@@ -263,6 +297,10 @@ async def paste(interaction: nextcord.Interaction):
 
 @bot.slash_command(description="Upload a file to your device", guild_ids=[guild_id])
 async def upload(interaction: nextcord.Interaction, file: nextcord.Attachment):
+    if not isUserAllowed(interaction.user.id): 
+        await interaction.send("You are not authorized to use this bot.")
+        return
+
     await interaction.send("Received your file.")
     
     image_bytes = await file.read()

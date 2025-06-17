@@ -31,7 +31,7 @@ CVDA connects to your computer through a custom Discord bot that listens for spe
 - Copy text & images directly to your PC's clipboard
 - Retrieve current clipboard contents remotely (Including images)
 - Remote file (including image and video) sending to your PC
-
+- User-locked protection (commands can only be run by you).
 
 ---
 
@@ -39,7 +39,6 @@ CVDA connects to your computer through a custom Discord bot that listens for spe
 
 
 - Kill specific running applications by command
-- User-locked protection (commands can only be run by you).
 
 ---
 
@@ -51,6 +50,7 @@ CVDA connects to your computer through a custom Discord bot that listens for spe
 4. Open the `CVDA.py` file.  
     - Insert your Discord bot token.  
     - Insert your server ID in the `guild_id` variable.  
+    - Insert your user ID or authorized users ID in the `allowed_users` variable
     - Set the path to your preferred browser.  
 5. Open the `compile.py` file.  
     - Set `STARTUP=False` if you do not want the bot to run on startup.  
@@ -59,7 +59,8 @@ CVDA connects to your computer through a custom Discord bot that listens for spe
     - Ensure the compiled `.exe` has been moved to the startup folder if requested.  
 8. Check if your Discord bot is online.  
     - If not, you can run the `.exe` manually.  
-9. Slash commands may take up to 20 minutes to appear—please wait before reporting issues.  
+9. Slash commands may take up to 20 minutes to appear—please wait before reporting issues. 
+10. Python 3.10.0 might not work with pyinstaller on some systems, [use python 3.9](https://www.python.org/downloads/release/python-390/) instead. 
 
 
 ## 🔐 Privacy & Usage
