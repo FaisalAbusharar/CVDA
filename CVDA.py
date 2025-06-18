@@ -21,7 +21,7 @@ import json
 # ------------ VARIABLES YOU CHANGE ---------------
 
 
-Activity = nextcord.Activity(name="CVDA 0.3.8 Beta", type=nextcord.ActivityType.listening) # You can change this aswell, it's optional. .playing .listening .watching are avaliable.
+Activity = nextcord.Activity(name="CVDA 0.3.9 Beta", type=nextcord.ActivityType.listening) # You can change this aswell, it's optional. .playing .listening .watching are avaliable.
 
 # ------------------------------------------------
 
@@ -109,6 +109,30 @@ async def web(interaction: nextcord.Interaction, text: str = nextcord.SlashOptio
         await interaction.send(f"Opened {text} in your default browser.")
     except Exception as e:
         await interaction.send(f"Failed to open {text}: {e}")
+
+
+@bot.slash_command(description="Upload a file to your device", guild_ids=[guild_id])
+async def upload(interaction: nextcord.Interaction, file: nextcord.Attachment):
+    if not isUserAllowed(interaction.user.id): 
+        await interaction.send("You are not authorized to use this bot.")
+        return
+
+    await interaction.send("Received your file.")
+    
+    image_bytes = await file.read()
+    os.path.splitext(file.filename)[1]
+
+    
+
+    downloads = get_downloads_folder()
+    save_path = f"{downloads}/CVDA_TRANSFER_{int(time.time())}{os.path.splitext(file.filename)[1]}"
+
+
+
+    with open(save_path, "wb") as f:
+        f.write(image_bytes)
+
+    await interaction.send("File saved successfully.")
 
 
 
@@ -305,28 +329,27 @@ async def paste(interaction: nextcord.Interaction):
 
 
 
-@bot.slash_command(description="Upload a file to your device", guild_ids=[guild_id])
-async def upload(interaction: nextcord.Interaction, file: nextcord.Attachment):
+@bot.slash_command(description="Switch Tabs", guild_ids=[guild_id])
+async def switchtab(interaction: nextcord.Interaction, amount: int = nextcord.SlashOption
+                    (description="The amount of tabs to switch through", default=1, required=False, name="amount")):
+    
     if not isUserAllowed(interaction.user.id): 
         await interaction.send("You are not authorized to use this bot.")
         return
 
-    await interaction.send("Received your file.")
-    
-    image_bytes = await file.read()
-    os.path.splitext(file.filename)[1]
 
-    
+    keyboard.press(Key.alt_l)
 
-    downloads = get_downloads_folder()
-    save_path = f"{downloads}/CVDA_TRANSFER_{int(time.time())}{os.path.splitext(file.filename)[1]}"
+    time.sleep(0.2)
+    for i in range(amount):
+        keyboard.tap(Key.tab)
+        time.sleep(0.1)
+    keyboard.release(Key.alt_l)
+    time.sleep(0.2)
+
+    await interaction.send(f"Switched tabs {amount} times.")
 
 
-
-    with open(save_path, "wb") as f:
-        f.write(image_bytes)
-
-    await interaction.send("File saved successfully.")
 
 if __name__ == "__main__":
     bot.run(discord_token) 
