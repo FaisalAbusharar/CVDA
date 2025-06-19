@@ -221,5 +221,4 @@ if compileResult == True:
     input("Press Enter to Close.")
 
 else:
-    print("\n \n \n An error has occurred in the compiler.")
-    input("Press Enter to Close.")
+    pass

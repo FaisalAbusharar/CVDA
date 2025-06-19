@@ -34,6 +34,7 @@ CVDA connects to your computer through a custom Discord bot that listens for spe
 - User-locked protection (commands can only be run by you).
 - Support for function keys in keystroke commands
 - Switch tabs remotely from anywhere. 
+- Take a screenshot of your desktop and view it.
 
 ---
 
@@ -41,7 +42,6 @@ CVDA connects to your computer through a custom Discord bot that listens for spe
 
 
 - Kill specific running applications by command
-- Take a screenshot of your desktop
 - Advanced features, including being able to open apps from the bot by storing the file paths
 - Help command for explaination
 - Compiler bug fixes.

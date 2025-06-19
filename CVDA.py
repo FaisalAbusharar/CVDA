@@ -21,7 +21,7 @@ import json
 # ------------ VARIABLES YOU CHANGE ---------------
 
 
-Activity = nextcord.Activity(name="CVDA 0.4.11 Beta", type=nextcord.ActivityType.listening) # You can change this aswell, it's optional. .playing .listening .watching are avaliable.
+Activity = nextcord.Activity(name="CVDA 0.4.12 Beta", type=nextcord.ActivityType.listening) # You can change this aswell, it's optional. .playing .listening .watching are avaliable.
 
 # ------------------------------------------------
 
@@ -156,7 +156,23 @@ async def upload(interaction: nextcord.Interaction, file: nextcord.Attachment):
     await interaction.send("File saved successfully.")
 
 
+@bot.slash_command(description="Take a screenshot and send it.", guild_ids=[get_config_value("guild_id")])
+async def screenshot(interaction: nextcord.Interaction):
+    if not isUserAllowed(interaction.user.id):
+        await interaction.send("You are not authorized to use this bot.")
+        return
 
+    # Take screenshot
+    screenshot = ImageGrab.grab()
+    
+    # Save to BytesIO
+    img_bytes = io.BytesIO()
+    screenshot.save(img_bytes, format='PNG')
+    img_bytes.seek(0)
+
+    # Send as a file
+    file = nextcord.File(img_bytes, filename="screenshot.png")
+    await interaction.send("Here is the current screen:", file=file)
 
 # -------------- COMPUTER KEYSTROKE CONTROL -----------------
 
