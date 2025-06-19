@@ -21,7 +21,7 @@ import json
 # ------------ VARIABLES YOU CHANGE ---------------
 
 
-Activity = nextcord.Activity(name="CVDA 0.4.9 Beta", type=nextcord.ActivityType.listening) # You can change this aswell, it's optional. .playing .listening .watching are avaliable.
+Activity = nextcord.Activity(name="CVDA 0.4.10 Beta", type=nextcord.ActivityType.listening) # You can change this aswell, it's optional. .playing .listening .watching are avaliable.
 
 # ------------------------------------------------
 
@@ -182,6 +182,18 @@ async def keystroke(interaction: nextcord.Interaction, text: str = nextcord.Slas
     "right": Key.right,
     "volumeup": Key.media_volume_up,
     "volumedown": Key.media_volume_down,
+    "f1": Key.f1,
+    "f2": Key.f2,
+    "f3": Key.f3,
+    "f4": Key.f4,
+    "f5": Key.f5,
+    "f6": Key.f6,
+    "f7": Key.f7,
+    "f8": Key.f8,
+    "f9": Key.f9,
+    "f10": Key.f10,
+    "f11": Key.f11,
+    "f12": Key.f12,
     
     }
 

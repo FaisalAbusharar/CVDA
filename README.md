@@ -32,6 +32,8 @@ CVDA connects to your computer through a custom Discord bot that listens for spe
 - Retrieve current clipboard contents remotely (Including images)
 - Remote file (including image and video) sending to your PC
 - User-locked protection (commands can only be run by you).
+- Support for function keys in keystroke commands
+- Switch tabs remotely from anywhere. 
 
 ---
 
@@ -40,8 +42,6 @@ CVDA connects to your computer through a custom Discord bot that listens for spe
 
 - Kill specific running applications by command
 - Take a screenshot of your desktop
-- Add support for function keys in keystroke commands
-- Switch tabs command 
 - Advanced features, including being able to open apps from the bot by storing the file paths
 - Help command for explaination
 - Compiler bug fixes.
@@ -54,7 +54,7 @@ CVDA connects to your computer through a custom Discord bot that listens for spe
 2. During the python installation, select add PYTHON to Path once you open the executable.
 3. Clone the repository or download the source files.  
 4. Setup a Discord bot by following the tutorial [here](https://discordpy.readthedocs.io/en/stable/discord.html).  
-5. Open the `CVDA.py` file.  
+5. Open the `config.json` file.  
     - Insert your Discord bot token.  
     - Insert your server ID in the `guild_id` variable.  
     - Insert your user ID or authorized users ID in the `allowed_users` variable
