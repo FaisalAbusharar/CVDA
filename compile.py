@@ -14,10 +14,7 @@ user_profile_path = os.environ['USERPROFILE']
 username = os.path.basename(user_profile_path)
 
 
-# ------------------ VARIABLES YOU CAN EDIT --------------------
-
-STARTUP = True # Automatically move into startup folder after compiling
-
+STARTUP = bool
 
 # ------------- EDIT IF YOU KNOW WHAT YOU ARE DOING ---------------
 
@@ -87,6 +84,7 @@ def compile():
 
 
     discord_token = config["discord_token"]
+    STARTUP = config["startup"]
 
     
     headers = {

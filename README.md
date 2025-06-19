@@ -57,17 +57,16 @@ CVDA connects to your computer through a custom Discord bot that listens for spe
 5. Open the `config.json` file.  
     - Insert your Discord bot token.  
     - Insert your server ID in the `guild_id` variable.  
-    - Insert your user ID or authorized users ID in the `allowed_users` variable
+    - Insert your user ID or authorized users ID in the `allowed_users` variable.
     - Set the path to your preferred browser.  
-6. Open the `compile.py` file.  
-    - Set `STARTUP=False` if you do not want the bot to run on startup.  
-7. Run the provided `.bat` file to execute the compiler.  
-8. Monitor the compiler messages for any errors.  
+    - Set `startup=false` if you do not want it to load on startup.
+6. Run the provided `.bat` file to execute the compiler.  
+7. Monitor the compiler messages for any errors.  
     - Ensure the compiled `.exe` has been moved to the startup folder if requested.  
-9. Check if your Discord bot is online.  
+8. Check if your Discord bot is online.  
     - If not, you can run the `.exe` manually.  
-10. Slash commands may take up to 20 minutes to appear—please wait before reporting issues. 
-11. Python 3.10.0 might not work with pyinstaller on some systems, [use python 3.9](https://www.python.org/downloads/release/python-390/) instead. 
+9. Slash commands may take up to 20 minutes to appear—please wait before reporting issues. 
+10. Python 3.10.0 might not work with pyinstaller on some systems, [use python 3.9](https://www.python.org/downloads/release/python-390/) instead. 
 
 
 ## 🔐 Privacy & Usage
