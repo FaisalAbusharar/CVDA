@@ -22,6 +22,8 @@ STARTUP = True # Automatically move into startup folder after compiling
 # ------------- EDIT IF YOU KNOW WHAT YOU ARE DOING ---------------
 
 src = os.path.abspath(".\\dist\\CVDA.exe")
+distfolder = os.path.abspath(".\\dist")
+
 
 def get_user_startup_folder():
     FOLDERID_Startup = UUID('{B97D20BB-F46A-4C97-BA10-5E3608430854}')
@@ -110,29 +112,33 @@ def compile():
         return False
 
     if STARTUP == True:
+
+        localappdata = os.environ['LOCALAPPDATA']
+        localappdata = localappdata.replace("\\", "/")
    
         try:
             print(get_user_startup_folder())
             os.system("taskkill /f /im  CVDA.exe")
             try:
-                os.mkdir(f"{get_user_startup_folder()}/CVDA")
+                os.mkdir(f"{localappdata}/CVDA")
             except FileExistsError:
                 print("Folder already exists, ignoring.")
             except Exception as e:
                 print(f"An error has occurred during the folder creation, {e}")
                 quit()
-            subprocess.run(f'move /Y "{src}" "{get_user_startup_folder()}/CVDA"', shell=True)
-            subprocess.run(f'move /Y "config.json" "{get_user_startup_folder()}/CVDA"', shell=True)
+            subprocess.run(f'move /Y "{src}" "{get_user_startup_folder()}"', shell=True)
+            subprocess.run(f'move /Y "config.json" "{localappdata}/CVDA"', shell=True)
             os.startfile(f"{get_user_startup_folder()}/CVDA")
         except:
             print("Failed to move program to startup folder, may need to be done manually. Or dst variable may need to be edited.")
             print("\n \n Move failed..")
-            os.startfile(f"/dist/")
+            os.startfile(distfolder)
 
             
     
     else:
-        os.startfile(f"/dist/")
+        subprocess.run(f'move /Y "config.json" "{distfolder}"', shell=True)
+        os.startfile(distfolder)
 
 
     return True
@@ -210,7 +216,10 @@ if packageReuslt == False:
 
 compileResult = compile()
 if compileResult == True:
-    print(" \n \n \n Completed Compiler... Run the .exe and check if the bot is enabled.")
+    if STARTUP == True:
+        print(" \n \n \n Completed Compiler... Check if the discord bot is online by running a command.")
+    else:
+        print("\n \n \n  Completed Compiler... Run the .exe and check if the discord bot is online.")
     input("Press Enter to Close.")
 
 else:

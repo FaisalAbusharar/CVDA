@@ -21,21 +21,42 @@ import json
 # ------------ VARIABLES YOU CHANGE ---------------
 
 
-Activity = nextcord.Activity(name="CVDA 0.3.9 Beta", type=nextcord.ActivityType.listening) # You can change this aswell, it's optional. .playing .listening .watching are avaliable.
+Activity = nextcord.Activity(name="CVDA 0.4.9 Beta", type=nextcord.ActivityType.listening) # You can change this aswell, it's optional. .playing .listening .watching are avaliable.
 
 # ------------------------------------------------
 
 
+def load_config():
+    config = None
 
-# Load config.json
-with open("config.json", "r") as f:
-    config = json.load(f)
 
-# Extract variables
-browser_path = config["browser_path"]
-discord_token = config["discord_token"]
-guild_id = config["guild_id"]
-allowed_users = config["allowed_users"]
+    try:
+        with open("config.json", "r") as f:
+            config = json.load(f)
+    except:
+        pass
+
+
+    if config is None:
+        try:
+            localappdata = os.environ['LOCALAPPDATA'].replace("\\", "/")
+            with open(f"{localappdata}/CVDA/config.json") as f:
+                config = json.load(f)
+        except:
+            pass
+
+    if config is None:
+        print("Error, config.json was not found in the local appdata nor the directory where the .exe is stored. quitting..")
+        #quit()
+
+    return config
+
+def get_config_value(key: str):
+    config = load_config()
+    if key in config:
+        return config[key]
+    else:
+        raise KeyError(f"'{key}' not found in config.json")
 
 keyboard = Controller()
 
@@ -69,7 +90,7 @@ def get_downloads_folder():
 
 
 def isUserAllowed(userid):
-    if userid in allowed_users:
+    if userid in get_config_value("allowed_users"):
         return True
     else: 
         return False
@@ -77,7 +98,7 @@ def isUserAllowed(userid):
 
 # --------------- COMPUTER HARDWARE CONTROL ------------------
 
-@bot.slash_command(description="Shutdown the device.", guild_ids=[guild_id])
+@bot.slash_command(description="Shutdown the device.", guild_ids=[get_config_value("guild_id")])
 async def shutdown(interaction: nextcord.Interaction):
 
     if not isUserAllowed(interaction.user.id): 
@@ -88,7 +109,7 @@ async def shutdown(interaction: nextcord.Interaction):
 
 
 
-@bot.slash_command(description="Restart the device.", guild_ids=[guild_id])
+@bot.slash_command(description="Restart the device.", guild_ids=[get_config_value("guild_id")])
 async def restart(interaction:  nextcord.Interaction):
     if not isUserAllowed(interaction.user.id): 
         await interaction.send("You are not authorized to use this bot.")
@@ -99,19 +120,19 @@ async def restart(interaction:  nextcord.Interaction):
 
 # --------------- COMPUTER SOFTWARE CONTROL ------------------
 
-@bot.slash_command(description="Input a URL that will be opened on the host device.", guild_ids=[guild_id])
+@bot.slash_command(description="Input a URL that will be opened on the host device.", guild_ids=[get_config_value("guild_id")])
 async def web(interaction: nextcord.Interaction, text: str = nextcord.SlashOption(description="The URL to open on the host device.")):
     if not isUserAllowed(interaction.user.id): 
         await interaction.send("You are not authorized to use this bot.")
         return
     try:
-        webbrowser.get(browser_path).open(text)
+        webbrowser.get(get_config_value("browser_path")).open(text)
         await interaction.send(f"Opened {text} in your default browser.")
     except Exception as e:
         await interaction.send(f"Failed to open {text}: {e}")
 
 
-@bot.slash_command(description="Upload a file to your device", guild_ids=[guild_id])
+@bot.slash_command(description="Upload a file to your device", guild_ids=[get_config_value("guild_id")])
 async def upload(interaction: nextcord.Interaction, file: nextcord.Attachment):
     if not isUserAllowed(interaction.user.id): 
         await interaction.send("You are not authorized to use this bot.")
@@ -140,7 +161,7 @@ async def upload(interaction: nextcord.Interaction, file: nextcord.Attachment):
 # -------------- COMPUTER KEYSTROKE CONTROL -----------------
 
 
-@bot.slash_command(description="Send a keystroke to the device that will be inputted.", guild_ids=[guild_id])
+@bot.slash_command(description="Send a keystroke to the device that will be inputted.", guild_ids=[get_config_value("guild_id")])
 async def keystroke(interaction: nextcord.Interaction, text: str = nextcord.SlashOption(description="The key to press (e.g. 'enter', 'space', 'a').") ):
     if not isUserAllowed(interaction.user.id): 
         await interaction.send("You are not authorized to use this bot.")
@@ -175,7 +196,7 @@ async def keystroke(interaction: nextcord.Interaction, text: str = nextcord.Slas
 
 
 
-@bot.slash_command(description="Simillar to the keystroke command, but types out full sentences.", guild_ids=[guild_id])
+@bot.slash_command(description="Simillar to the keystroke command, but types out full sentences.", guild_ids=[get_config_value("guild_id")])
 async def type(
     interaction: nextcord.Interaction,text: str = nextcord.SlashOption(description="The full sentence to type on the host device."), 
                sendEnter: str = nextcord.SlashOption(
@@ -210,7 +231,7 @@ async def type(
     await interaction.send(f"Typed {text} on your device.")
 
 
-@bot.slash_command(description="Copy to your device's clipboard, Note: Image will always be copied last.", guild_ids=[guild_id])
+@bot.slash_command(description="Copy to your device's clipboard, Note: Image will always be copied last.", guild_ids=[get_config_value("guild_id")])
 async def clipboard(
     interaction: nextcord.Interaction, text: str = nextcord.SlashOption(description="Text to copy to the clipboard", required=False, default=None),
     image: nextcord.Attachment = nextcord.SlashOption(description="Copy an image to the clipboard", required=False, default=None),
@@ -274,7 +295,7 @@ async def clipboard(
 
 
 
-@bot.slash_command(description="Paste your device's clipboard to Discord", guild_ids=[guild_id])
+@bot.slash_command(description="Paste your device's clipboard to Discord", guild_ids=[get_config_value("guild_id")])
 async def paste(interaction: nextcord.Interaction):
     if not isUserAllowed(interaction.user.id): 
         await interaction.send("You are not authorized to use this bot.")
@@ -329,7 +350,7 @@ async def paste(interaction: nextcord.Interaction):
 
 
 
-@bot.slash_command(description="Switch Tabs", guild_ids=[guild_id])
+@bot.slash_command(description="Switch Tabs", guild_ids=[get_config_value("guild_id")])
 async def switchtab(interaction: nextcord.Interaction, amount: int = nextcord.SlashOption
                     (description="The amount of tabs to switch through", default=1, required=False, name="amount")):
     
@@ -352,6 +373,6 @@ async def switchtab(interaction: nextcord.Interaction, amount: int = nextcord.Sl
 
 
 if __name__ == "__main__":
-    bot.run(discord_token) 
+    bot.run(get_config_value("discord_token")) 
 
 # Developed by Faisal Abusharar.. More features soon :D
