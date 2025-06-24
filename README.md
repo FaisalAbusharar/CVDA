@@ -31,20 +31,19 @@ CVDA connects to your computer through a custom Discord bot that listens for spe
 - Copy text & images directly to your PC's clipboard
 - Retrieve current clipboard contents remotely (Including images)
 - Remote file (including image and video) sending to your PC
-- User-locked protection (commands can only be run by you).
+- User-locked protection (commands can only be run by you)
 - Support for function keys in keystroke commands
-- Switch tabs remotely from anywhere. 
-- Take a screenshot of your desktop and view it.
+- Switch tabs remotely from anywhere
+- Take a screenshot of your desktop and view it
+- Kill applications remotely by commands
 
 ---
 
 ## 🔧 Upcoming Features
 
 
-- Kill specific running applications by command
 - Advanced features, including being able to open apps from the bot by storing the file paths
 - Help command for explaination
-- Compiler bug fixes.
 
 ---
 
