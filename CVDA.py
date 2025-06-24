@@ -21,7 +21,7 @@ import json
 # ------------ VARIABLES YOU CHANGE ---------------
 
 
-Activity = nextcord.Activity(name="CVDA 0.4.12 Beta", type=nextcord.ActivityType.listening) # You can change this aswell, it's optional. .playing .listening .watching are avaliable.
+Activity = nextcord.Activity(name="CVDA 0.5.13 Beta", type=nextcord.ActivityType.listening) # You can change this aswell, it's optional. .playing .listening .watching are avaliable.
 
 # ------------------------------------------------
 
@@ -68,7 +68,7 @@ bot = commands.Bot(command_prefix="PC-", intents=intents, activity=Activity)
 
 
 
-# ---------- GENERAL FUNCTIONS ------------
+#! ---------- GENERAL FUNCTIONS ------------
 
 
 def get_downloads_folder():
@@ -96,7 +96,7 @@ def isUserAllowed(userid):
         return False
 
 
-# --------------- COMPUTER HARDWARE CONTROL ------------------
+#& --------------- COMPUTER HARDWARE CONTROL ------------------
 
 @bot.slash_command(description="Shutdown the device.", guild_ids=[get_config_value("guild_id")])
 async def shutdown(interaction: nextcord.Interaction):
@@ -118,7 +118,7 @@ async def restart(interaction:  nextcord.Interaction):
     await interaction.send("Restarting..")
 
 
-# --------------- COMPUTER SOFTWARE CONTROL ------------------
+#$ --------------- COMPUTER SOFTWARE CONTROL ------------------
 
 @bot.slash_command(description="Input a URL that will be opened on the host device.", guild_ids=[get_config_value("guild_id")])
 async def web(interaction: nextcord.Interaction, text: str = nextcord.SlashOption(description="The URL to open on the host device.")):
@@ -174,7 +174,18 @@ async def screenshot(interaction: nextcord.Interaction):
     file = nextcord.File(img_bytes, filename="screenshot.png")
     await interaction.send("Here is the current screen:", file=file)
 
-# -------------- COMPUTER KEYSTROKE CONTROL -----------------
+
+@bot.slash_command(description="Kill a specific application running by task manager.", guild_ids=[get_config_value("guild_id")])
+async def killapp(interaction: nextcord.Integration, appid: str = nextcord.SlashOption(description="The exact App ID of the executable, e.g. chrome.exe")):
+    exit = os.system(f"taskkill /f /im  {appid}")
+
+    if exit == 0:
+        await interaction.send(f"Application {appid} has been closed.")
+    else:
+        await interaction.send(f"Application {appid} was not found")
+
+
+#* -------------- COMPUTER KEYSTROKE CONTROL -----------------
 
 
 @bot.slash_command(description="Send a keystroke to the device that will be inputted.", guild_ids=[get_config_value("guild_id")])
@@ -403,4 +414,4 @@ async def switchtab(interaction: nextcord.Interaction, amount: int = nextcord.Sl
 if __name__ == "__main__":
     bot.run(get_config_value("discord_token")) 
 
-# Developed by Faisal Abusharar.. More features soon :D
+#todo: Developed by Faisal Abusharar.. More features soon :D
