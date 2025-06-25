@@ -36,13 +36,12 @@ CVDA connects to your computer through a custom Discord bot that listens for spe
 - Switch tabs remotely from anywhere
 - Take a screenshot of your desktop and view it
 - Kill applications remotely by commands
+- Advanced features, including being able to open apps from the bot by storing the file paths
 
 ---
 
 ## 🔧 Upcoming Features
 
-
-- Advanced features, including being able to open apps from the bot by storing the file paths
 - Help command for explaination
 
 ---

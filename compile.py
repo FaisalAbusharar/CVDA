@@ -6,7 +6,6 @@ from pathlib import Path
 import json
 from uuid import UUID
 import sys
-import time
 
 package_name = "pyinstaller"
 

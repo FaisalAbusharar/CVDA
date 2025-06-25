@@ -9,19 +9,20 @@ from PIL import Image, ImageGrab
 import io
 import ctypes
 from pathlib import Path
+import subprocess
 import win32clipboard
 import win32con
 from uuid import UUID
 import json
 
 
-# DO NOT CHANGE THE FILE NAME.
+#! DO NOT CHANGE THE FILE NAME.
 
  
 # ------------ VARIABLES YOU CHANGE ---------------
 
 
-Activity = nextcord.Activity(name="CVDA 0.5.13 Beta", type=nextcord.ActivityType.listening) # You can change this aswell, it's optional. .playing .listening .watching are avaliable.
+Activity = nextcord.Activity(name="CVDA 0.6.13 Beta", type=nextcord.ActivityType.listening) # You can change this aswell, it's optional. .playing .listening .watching are avaliable.
 
 # ------------------------------------------------
 
@@ -47,16 +48,51 @@ def load_config():
 
     if config is None:
         print("Error, config.json was not found in the local appdata nor the directory where the .exe is stored. quitting..")
-        #quit()
+        quit()
 
     return config
 
-def get_config_value(key: str):
-    config = load_config()
-    if key in config:
-        return config[key]
+def get_config_value(key: str, alter=False, lst=None):
+    # lst expected to be [appkey, apppath]
+    if lst is None:
+        lst = []
+
+    config = load_config() or {}
+
+    if not alter:
+        if key in config:
+            return config[key]
+        else:
+            raise KeyError(f"'{key}' not found in config.json")
+
     else:
-        raise KeyError(f"'{key}' not found in config.json")
+
+
+        appkey, apppath = lst
+
+
+        config[appkey] = apppath
+
+  
+        try:
+            with open("config.json", "w") as f:
+                json.dump(config, f, indent=4)
+        except Exception as e:
+            # If writing to local config.json fails, try fallback path
+            try:
+                localappdata = os.environ['LOCALAPPDATA'].replace("\\", "/")
+                fallback_path = f"{localappdata}/CVDA/config.json"
+                with open(fallback_path, "w") as f:
+                    json.dump(config, f, indent=4)
+            except Exception as e2:
+                raise RuntimeError(f"Failed to save config: {e2}") from e2
+
+        return config.get(key, None)
+        
+        
+        
+
+        
 
 keyboard = Controller()
 
@@ -176,7 +212,7 @@ async def screenshot(interaction: nextcord.Interaction):
 
 
 @bot.slash_command(description="Kill a specific application running by task manager.", guild_ids=[get_config_value("guild_id")])
-async def killapp(interaction: nextcord.Integration, appid: str = nextcord.SlashOption(description="The exact App ID of the executable, e.g. chrome.exe")):
+async def killapp(interaction: nextcord.Interaction, appid: str = nextcord.SlashOption(description="The exact App ID of the executable, e.g. chrome.exe")):
     exit = os.system(f"taskkill /f /im  {appid}")
 
     if exit == 0:
@@ -411,6 +447,37 @@ async def switchtab(interaction: nextcord.Interaction, amount: int = nextcord.Sl
 
 
 
+#& ---------- ADVANCED FUNCTIONS ------------
+
+@bot.slash_command(description="Allows you store a path of an application, with an ID", guild_ids=[get_config_value("guild_id")])
+async def saveapp(interaction: nextcord.Interaction, 
+                  appkey: str = nextcord.SlashOption(description="This is what you will use to open the app, the key.", required=True
+                                                                                        ) ,apppath: str = nextcord.SlashOption(description="The exact path to the application, used to open the application.", required=True)):
+    if not isUserAllowed(interaction.user.id): 
+        await interaction.send("You are not authorized to use this bot.")
+        return
+    get_config_value(alter=True, key="ignore", lst=[appkey, apppath])
+    await interaction.send("Successfully added Key & Path to your config.")
+
+
+@bot.slash_command(description="Allows you store a path of an application, with an ID", guild_ids=[get_config_value("guild_id")])
+async def loadapp(interaction: nextcord.Interaction, 
+                  appkey: str = nextcord.SlashOption(description="The key you stored the app with.", required=True),
+                  directpath: str = nextcord.SlashOption(description="Is this a direct path or a key?", choices=["Yes", "No"], default="No", required=False)):
+    
+    if not isUserAllowed(interaction.user.id): 
+        await interaction.send("You are not authorized to use this bot.")
+        return
+    if directpath=="No": path = get_config_value(appkey)
+    else: path = appkey
+    result = subprocess.run([path], capture_output=True, text=True)
+    if result.returncode == 0:
+        await interaction.send("Successfully opened your app.")
+    else:
+        await interaction.send("App cannot be opened.")
+
+
+print(get_config_value("guild_id"))
 if __name__ == "__main__":
     bot.run(get_config_value("discord_token")) 
 
