@@ -1,10 +1,11 @@
 {
     "browser_path": "C:/Program Files/Google/Chrome/Application/chrome.exe %s",
     "discord_token": "",
-    "guild_id": 1221767342564839515,
+    "guild_id": 1232453254544542,
     "allowed_users": [
         730505256153456423,
         7120523256153456343
     ],
     "startup": true
+
 }

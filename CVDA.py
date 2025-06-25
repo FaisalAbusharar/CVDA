@@ -22,7 +22,7 @@ import json
 # ------------ VARIABLES YOU CHANGE ---------------
 
 
-Activity = nextcord.Activity(name="CVDA 0.6.13 Beta", type=nextcord.ActivityType.listening) # You can change this aswell, it's optional. .playing .listening .watching are avaliable.
+Activity = nextcord.Activity(name="CVDA 1.0.0", type=nextcord.ActivityType.listening) # You can change this aswell, it's optional. .playing .listening .watching are avaliable.
 
 # ------------------------------------------------
 
@@ -475,6 +475,74 @@ async def loadapp(interaction: nextcord.Interaction,
         await interaction.send("Successfully opened your app.")
     else:
         await interaction.send("App cannot be opened.")
+
+
+#$ ------------- HELP COMMAND --------------
+@bot.slash_command(description="List all commands and their usage details.", guild_ids=[get_config_value("guild_id")])
+async def help(interaction: nextcord.Interaction):
+    if not isUserAllowed(interaction.user.id): 
+        await interaction.send("You are not authorized to use this bot.")
+        return
+
+    embed = nextcord.Embed(
+        title="📘 Help Menu — CVDA Commands",
+        description="Use the following commands to interact with your host device.",
+        color=nextcord.Color.blue()
+    )
+
+    embed.add_field(
+        name="🖥️ System Control",
+        value=(
+            "**/shutdown** - Instantly shuts down the device.\n"
+            "**/restart** - Restarts the device after 1 second."
+        ),
+        inline=False
+    )
+
+    embed.add_field(
+        name="🌐 Web & File Control",
+        value=(
+            "**/web text:** `<url>` — Opens a website.\n"
+            "Example: `/web text:https://google.com`\n\n"
+            "**/upload file:** `<attachment>` — Uploads a file to the host machine.\n\n"
+            "**/screenshot** — Captures the current screen.\n\n"
+            "**/killapp appid:** `<name.exe>` — Kills a process.\n"
+            "Example: `/killapp appid:chrome.exe`"
+        ),
+        inline=False
+    )
+
+    embed.add_field(
+        name="⌨️ Keyboard & Input",
+        value=(
+            "**/keystroke text:** `<key>` — Simulates a keypress.\n"
+            "Example: `/keystroke text:enter`\n\n"
+            "**/type text:** `<sentence>` | `send_enter:` Yes/No — Types a sentence.\n"
+            "Example: `/type text:'Hello' send_enter:Yes`\n\n"
+            "**/clipboard text/image:** Copies text or image to clipboard.\n"
+            "Supports `paste_clipboard:` Yes/No.\n\n"
+            "**/paste** — Pastes clipboard content back to Discord.\n\n"
+            "**/switchtab amount:** `<number>` — Switches windows using Alt+Tab.\n"
+            "Example: `/switchtab amount:2`"
+        ),
+        inline=False
+    )
+
+    embed.add_field(
+        name="⚙️ App Management",
+        value=(
+            "**/saveapp appkey:** `<shortcut>` | `apppath:` `<path>` — Save an app path.\n"
+            "Example: `/saveapp appkey:chrome apppath:'C:/Path/chrome.exe'`\n\n"
+            "**/loadapp appkey:** `<shortcut_or_path>` | `directpath:` Yes/No — Open app.\n"
+            "Example: `/loadapp appkey:chrome directpath:No`"
+        ),
+        inline=False
+    )
+
+    embed.set_footer(text="Use commands responsibly. Only authorized users can access them.")
+    
+    await interaction.send(embed=embed)
+
 
 
 print(get_config_value("guild_id"))

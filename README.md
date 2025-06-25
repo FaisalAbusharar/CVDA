@@ -1,4 +1,4 @@
-# CVDA
+# CVDA 1.0.0
 
 ## Control via Discord Application
 
@@ -37,11 +37,6 @@ CVDA connects to your computer through a custom Discord bot that listens for spe
 - Take a screenshot of your desktop and view it
 - Kill applications remotely by commands
 - Advanced features, including being able to open apps from the bot by storing the file paths
-
----
-
-## 🔧 Upcoming Features
-
 - Help command for explaination
 
 ---
@@ -75,4 +70,4 @@ This tool is designed for **personal use**. Avoid using it in servers where untr
 
 ## 👨‍💻 Developed by Faisal Abusharar
 
-Don't mind the rough code, it's a WIP.
+
