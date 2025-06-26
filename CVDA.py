@@ -22,7 +22,7 @@ import json
 # ------------ VARIABLES YOU CHANGE ---------------
 
 
-Activity = nextcord.Activity(name="CVDA 1.0.0", type=nextcord.ActivityType.listening) # You can change this aswell, it's optional. .playing .listening .watching are avaliable.
+Activity = nextcord.Activity(name="CVDA 1.0.1", type=nextcord.ActivityType.listening) # You can change this aswell, it's optional. .playing .listening .watching are avaliable.
 
 # ------------------------------------------------
 
@@ -213,12 +213,30 @@ async def screenshot(interaction: nextcord.Interaction):
 
 @bot.slash_command(description="Kill a specific application running by task manager.", guild_ids=[get_config_value("guild_id")])
 async def killapp(interaction: nextcord.Interaction, appid: str = nextcord.SlashOption(description="The exact App ID of the executable, e.g. chrome.exe")):
+    if not isUserAllowed(interaction.user.id):
+        await interaction.send("You are not authorized to use this bot.")
+        return
+    
     exit = os.system(f"taskkill /f /im  {appid}")
 
     if exit == 0:
         await interaction.send(f"Application {appid} has been closed.")
     else:
         await interaction.send(f"Application {appid} was not found")
+
+
+
+@bot.slash_command(description="Lock your computer.", guild_ids=[get_config_value("guild_id")])
+async def lock(interaction: nextcord.Interaction):
+    if not isUserAllowed(interaction.user.id):
+        await interaction.send("You are not authorized to use this bot.")
+        return
+    
+    ctypes.windll.user32.LockWorkStation()
+    await interaction.send("Successfully locked your computer.")
+    
+
+    
 
 
 #* -------------- COMPUTER KEYSTROKE CONTROL -----------------

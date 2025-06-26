@@ -38,6 +38,7 @@ CVDA connects to your computer through a custom Discord bot that listens for spe
 - Kill applications remotely by commands
 - Advanced features, including being able to open apps from the bot by storing the file paths
 - Help command for explaination
+- Lock commmand to lock your computer
 
 ---
 
