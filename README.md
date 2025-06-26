@@ -26,7 +26,7 @@ CVDA connects to your computer through a custom Discord bot that listens for spe
 - Control system volume through keystroke commands
 - Auto-compiler that handles setup and startup integration automatically
 - Implemented slash commands
-- Support for multiple keystrokes in a single command
+- Support for multiple keystrokes in a single command, including a shortcut command
 - Works only on one specific server for privacy reasons
 - Copy text & images directly to your PC's clipboard
 - Retrieve current clipboard contents remotely (Including images)
@@ -39,6 +39,7 @@ CVDA connects to your computer through a custom Discord bot that listens for spe
 - Advanced features, including being able to open apps from the bot by storing the file paths
 - Help command for explaination
 - Lock commmand to lock your computer
+
 
 ---
 
