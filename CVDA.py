@@ -22,7 +22,7 @@ import json
 # ------------ VARIABLES YOU CHANGE ---------------
 
 
-Activity = nextcord.Activity(name="CVDA 1.0.1", type=nextcord.ActivityType.listening) # You can change this aswell, it's optional. .playing .listening .watching are avaliable.
+Activity = nextcord.Activity(name="CVDA 1.0.2", type=nextcord.ActivityType.listening) # You can change this aswell, it's optional. .playing .listening .watching are avaliable.
 
 # ------------------------------------------------
 
@@ -462,6 +462,71 @@ async def switchtab(interaction: nextcord.Interaction, amount: int = nextcord.Sl
     time.sleep(0.2)
 
     await interaction.send(f"Switched tabs {amount} times.")
+
+
+from pynput.keyboard import Key, Controller
+keyboard = Controller()
+
+@bot.slash_command(description="Activate a keyboard shortcut.", guild_ids=[get_config_value("guild_id")])
+async def shortcut(interaction: nextcord.Interaction, keys: str = nextcord.SlashOption(description="The key combo (e.g. ctrl+shift+esc)")):
+    if not isUserAllowed(interaction.user.id):
+        await interaction.send("You are not authorized to use this bot.")
+        return
+
+
+    special_keys = {
+        "space": Key.space,
+        "shift": Key.shift,
+        "ctrl": Key.ctrl_l,
+        "alt": Key.alt_l,
+        "enter": Key.enter,
+        "esc": Key.esc,
+        "backspace": Key.backspace,
+        "up": Key.up,
+        "down": Key.down,
+        "left": Key.left,
+        "right": Key.right,
+        "tab": Key.tab,
+        "capslock": Key.caps_lock,
+        "cmd": Key.cmd,
+        "win": Key.cmd,
+        "delete": Key.delete,
+        "home": Key.home,
+        "end": Key.end,
+        "pageup": Key.page_up,
+        "pagedown": Key.page_down,
+        "f1": Key.f1,
+        "f2": Key.f2,
+        "f3": Key.f3,
+        "f4": Key.f4,
+        "f5": Key.f5,
+        "f6": Key.f6,
+        "f7": Key.f7,
+        "f8": Key.f8,
+        "f9": Key.f9,
+        "f10": Key.f10,
+        "f11": Key.f11,
+        "f12": Key.f12,
+    }
+
+    try:
+        key_combo = keys.lower().split('+')
+        key_sequence = []
+
+        for k in key_combo:
+            key_sequence.append(special_keys.get(k.strip(), k.strip()))
+
+     
+        for k in key_sequence:
+            keyboard.press(k)
+
+     
+        for k in reversed(key_sequence):
+            keyboard.release(k)
+
+        await interaction.send(f"Shortcut executed: {keys}")
+    except Exception as e:
+        await interaction.send(f"Failed to execute shortcut: {e}")
 
 
 
